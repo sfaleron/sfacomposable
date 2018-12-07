@@ -6,14 +6,13 @@ or a standalone function.
 
 Functions take/return exactly one argument/value. Composition is tricky
 to define otherwise. Something like "functions take/return exactly one
-tuple", which isn't really an improvement.
-"""
+tuple", which isn't really an improvement."""
 
 
-from functools import reduce as _reduce, update_wrapper as _update
+from functools import reduce, update_wrapper
 
-_notDefined = object()
 
+notDefined = object()
 
 class Function(object):
     """
@@ -27,7 +26,7 @@ class Function(object):
     _compose() class method."""
 
     def __init__(self, f):
-        _update(self, f)
+        update_wrapper(self, f)
         self._f = f
 
     def __call__(self, t):
@@ -40,8 +39,8 @@ class Function(object):
     @staticmethod
     def _strip(f):
         """If passed an instance, return the callable; otherwise, pass the
-        argument through. A duck-typed approach is taken; any object
-        with a "func" attribute will be unwrapped."""
+        argument through. A duck-typed approach is taken: any object
+        with a "func" attribute will be stripped down to that attribute."""
 
         return f.func if hasattr(f, 'func') else f
 
@@ -64,21 +63,20 @@ class Function(object):
         return self._compose(other, self)
 
     @classmethod
-    def freduce(cls, op, fxns, initializer=_notDefined):
+    def freduce(cls, op, fxns, initializer=notDefined):
         """Like reduce(), but for functions.
 
         Example: freduce(op, [f, g]) returns a new instance wrapping
-        lambda t: reduce(op, [f(t), g(t)])
-        """
+        lambda t: reduce(op, [f(t), g(t)])"""
 
         # reify any iterator (and strip)
         fxns = tuple(map(cls._strip, fxns))
 
-        if initializer is _notDefined:
-            return cls(lambda t: _reduce(
-                op, [f(t) for f in fxns]))
+        if initializer is notDefined:
+            return cls(lambda t: reduce(
+                op, (f(t) for f in fxns)))
         else:
-            return cls(lambda t: _reduce(
-                op, [f(t) for f in fxns], initializer))
+            return cls(lambda t: reduce(
+                op, (f(t) for f in fxns), initializer))
 
 freduce = Function.freduce
