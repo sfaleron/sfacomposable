@@ -1,13 +1,12 @@
 
 """
-Wraps a callable, providing methods for composition, in either "wrapped"
-or "nested" senses. Also a function-oriented reduce(), as a class method,
-or a standalone function.
+The Function class wraps a callable, providing methods for composition,
+in either "wrapped" or "nested" senses. Also a function-oriented reduce(),
+as a class method. It is also accessable as a standalone function.
 
-Functions take/return exactly one argument/value. Composition is tricky
-to define otherwise. Something like "functions take/return exactly one
-tuple", which isn't really an improvement."""
-
+Function instances take/return exactly one argument/value. Composition
+is tricky to define otherwise. Something like "functions take/return
+exactly one tuple", which isn't really an improvement."""
 
 from functools import reduce, update_wrapper
 

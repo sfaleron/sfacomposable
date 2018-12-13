@@ -1,1 +1,2 @@
-from .functional import Function, freduce
+
+from .functional import Function, freduce, __doc__
