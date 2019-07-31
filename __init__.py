@@ -1,2 +1,2 @@
 
-from .functional import Function, freduce, __doc__
+from .base import Function, freduce, __doc__
