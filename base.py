@@ -1,12 +1,45 @@
 
+# composition updates an internal list at either end depending on nest/wrap
+# simplify will go through the list and collapse any that may be combined
+# reduce/condense/umm will replace the list with one function, or maybe not.
+# could be just as well to keep the list?
+
+# it seems necessary to have a method that will flag when simplification is defined
+# for nest and/or wrap. It should be a two argument classmethod. Same method for
+# either direction. If nest matches, go with it, if not check wrap.
+
+# test:
+# both must be Functions or a subtype
+
+#   invocation      if True
+# a.simplify(a,b)  a.nest(b)
+# b.simplify(b,a)  b.wrap(a)
+
+# simplification
+# set i=0
+# if elements i,i+1 simplify, replace them with the simplification
+# in either case, increment i by 1
+# iterate until ith element is the last element.
+
+# it's been crazy trying to wrap my head around how to implement this. the trouble
+# is actually pretty straightforward. The Function instance is trying to manage other
+# instances in a sibling sort of relationship. Nutty! There needs to be a list type
+# that contains the siblings and has distinct wrap/nest handling but has the same
+# high-level API. The reduce/condense/umm methos will be its, and it returns a
+# Function instance.
+
+# Rename current type to "_Function"?
+# Nope. List type is named "Functional"
+
+# reduce/condense/umm should be availabel as a property and a method?
+# something short would be nice, but also something not too terse.. uhhhh
+
 """
 The Function class wraps a callable, providing methods for composition,
 in either "wrapped" or "nested" senses. Also a function-oriented reduce(),
 as a class method. It is also accessable as a standalone function.
 
-Function instances take/return exactly one argument/value. Composition
-is tricky to define otherwise. Something like "functions take/return
-exactly one tuple", which isn't really an improvement."""
+Function instances take/return exactly one argument/value."""
 
 from functools import reduce, update_wrapper
 
