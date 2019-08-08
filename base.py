@@ -30,6 +30,8 @@
 
 # Rename current type to "_Function"?
 # Nope. List type is named "Functional"
+# presumably tuple/immutable, not list
+# might support concatenation with "+"
 
 # reduce/condense/umm should be available as a property and a method?
 # something short would be nice, but also something not too terse.. uhhhh
