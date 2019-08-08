@@ -25,7 +25,7 @@
 # is actually pretty straightforward. The Function instance is trying to manage other
 # instances in a sibling sort of relationship. Nutty! There needs to be a list type
 # that contains the siblings and has distinct wrap/nest handling but has the same
-# high-level API. The reduce/condense/umm methos will be its, and it returns a
+# high-level API. The reduce/condense/umm methods will be its, and it returns a
 # Function instance.
 
 # Rename current type to "_Function"?
