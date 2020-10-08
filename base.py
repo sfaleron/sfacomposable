@@ -48,7 +48,7 @@ from functools import reduce, update_wrapper
 
 notDefined = object()
 
-class Function(object):
+class Function:
     """
     Provides methods for composition, both "wrapped" other(self(t))
     and "nested" self(other(t)). Docstrings and such are passed through
