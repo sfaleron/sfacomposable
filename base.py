@@ -1,58 +1,20 @@
 
-# composition updates an internal list at either end depending on nest/wrap
-# simplify will go through the list and collapse any that may be combined
-# reduce/condense/umm will replace the list with one function, or maybe not.
-# could be just as well to keep the list?
-
-# it seems necessary to have a method that will flag when simplification is defined
-# for nest and/or wrap. It should be a two argument classmethod. Same method for
-# either direction. If nest matches, go with it, if not check wrap.
-
-# test:
-# both must be Functions or a subtype
-
-#   invocation      if True
-# a.simplify(a,b)  a.nest(b)
-# b.simplify(b,a)  b.wrap(a)
-
-# simplification
-# set i=0
-# if elements i,i+1 simplify, replace them with the simplification
-# in either case, increment i by 1
-# iterate until ith element is the last element.
-
-# it's been crazy trying to wrap my head around how to implement this. the trouble
-# is actually pretty straightforward. The Function instance is trying to manage other
-# instances in a sibling sort of relationship. Nutty! There needs to be a list type
-# that contains the siblings and has distinct wrap/nest handling but has the same
-# high-level API. The reduce/condense/umm methods will be its, and it returns a
-# Function instance.
-
-# Rename current type to "_Function"?
-# Nope. List type is named "Functional"
-# presumably tuple/immutable, not list
-# might support concatenation with "+"
-
-# reduce/condense/umm should be available as a property and a method?
-# something short would be nice, but also something not too terse.. uhhhh
-
 """
-The Function class wraps a callable, providing methods for composition,
-in either "wrapped" or "nested" senses. Also a function-oriented reduce(),
-as a class method. It is also accessable as a standalone function.
+The Composable class wraps a callable, providing methods for composition.
+Composable instances take/return exactly one argument/value."""
 
-Function instances take/return exactly one argument/value."""
-
-from functools import reduce, update_wrapper
+from functools import update_wrapper
 
 
-notDefined = object()
-
-class Function:
+class Composable:
     """
     Provides methods for composition, both "wrapped" other(self(t))
     and "nested" self(other(t)). Docstrings and such are passed through
     via functools.update_wrapper().
+
+    Shift operators are overridden such that the operator points to the outer
+    function, i.e. f >> g is g(f) and f << g is f(g), in a manner analogous to
+    shell redirection.
 
     A _strip() staticmethod is called to unwrap callables when embedding
     them into a new function. Subclasses may wish to override this be-
@@ -96,21 +58,18 @@ class Function:
         """other(self(t))"""
         return self._compose(other, self)
 
-    @classmethod
-    def freduce(cls, op, fxns, initializer=notDefined):
-        """Like reduce(), but for functions.
+    def __lshift__(self, other):
+        """self << other"""
+        return self._compose(self, other)
 
-        Example: freduce(op, [f, g]) returns a new instance wrapping
-        lambda t: reduce(op, [f(t), g(t)])"""
+    def __rshift__(self, other):
+        """self >> other"""
+        return self._compose(other, self)
 
-        # reify any iterator (and strip)
-        fxns = tuple(map(cls._strip, fxns))
+    def __rlshift__(self, other):
+        """other << self"""
+        return self._compose(other, self)
 
-        if initializer is notDefined:
-            return cls(lambda t: reduce(
-                op, (f(t) for f in fxns)))
-        else:
-            return cls(lambda t: reduce(
-                op, (f(t) for f in fxns), initializer))
-
-freduce = Function.freduce
+    def __rrshift__(self, other):
+        """other >> self"""
+        return self._compose(self, other)

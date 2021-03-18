@@ -1,2 +1,3 @@
 
-from .base import Function, freduce, __doc__
+from .base import Composable, __doc__
+from . import lib
