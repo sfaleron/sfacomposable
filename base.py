@@ -59,17 +59,17 @@ class Composable:
         return self._compose(other, self)
 
     def __lshift__(self, other):
-        """self << other"""
+        """self(other(t))"""
         return self._compose(self, other)
 
     def __rshift__(self, other):
-        """self >> other"""
+        """other(self(t))"""
         return self._compose(other, self)
 
     def __rlshift__(self, other):
-        """other << self"""
+        """other(self(t))"""
         return self._compose(other, self)
 
     def __rrshift__(self, other):
-        """other >> self"""
+        """self(other(t))"""
         return self._compose(self, other)
