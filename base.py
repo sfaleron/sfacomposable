@@ -19,7 +19,11 @@ class Composable:
     A _strip() staticmethod is called to unwrap callables when embedding
     them into a new function. Subclasses may wish to override this be-
     havior. An additional hook is available one step higher with the
-    _compose() class method."""
+    _compose() class method.
+
+    The or operator is overloaded to implement "piping" in the manner familiar
+    to shell users. Not-callable arguments are passed to the function and
+    evaluated in the expected manner."""
 
     def __init__(self, f):
         update_wrapper(self, f)
@@ -58,18 +62,13 @@ class Composable:
         """other(self(t))"""
         return self._compose(other, self)
 
-    def __lshift__(self, other):
-        """self(other(t))"""
-        return self._compose(self, other)
-
-    def __rshift__(self, other):
+    def __or__(self, other):
         """other(self(t))"""
         return self._compose(other, self)
 
-    def __rlshift__(self, other):
-        """other(self(t))"""
-        return self._compose(other, self)
-
-    def __rrshift__(self, other):
+    def __ror__(self, other):
         """self(other(t))"""
-        return self._compose(self, other)
+        if callable(other):
+            return self._compose(self, other)
+        else:
+            return self(other)
