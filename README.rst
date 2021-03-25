@@ -19,10 +19,11 @@ Sample session::
     >>> 1|f|g|h
     256
 
-Also available as a doctest_ on the command line::
+Also available as a (silent) doctest_ on the `command line`_::
 
-    $ python -m composable.tests
+    $ python -m sfacomposable.tests
     Testing..
     Success!
 
 .. _doctest: https://docs.python.org/3/library/doctest.html
+.. _command line: https://docs.python.org/3/using/cmdline.html#cmdoption-m
