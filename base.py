@@ -46,11 +46,10 @@ def compose(*f):
 class ComposableBase:
     """
     Provides methods for composition, both "wrapped" other(self(t))
-    and "nested" self(other(t)). Docstrings and such are passed through
-    via functools.update_wrapper().
+    and "nested" self(other(t)).
 
     Composition can be customized by overloading the method _compose(). The
-    default behavior is to use the module-level compose() function
+    default behavior is to use the module-level compose() function.
 
     The or operator is overloaded to implement "piping" in the manner familiar
     to shell users. Non-callable arguments at the front of the pipeline are
@@ -82,9 +81,13 @@ class ComposableBase:
 
 
 class Composable(ComposableBase):
-    """
-    If the constructor is not passed a callable, the identity function is
-    used.
+    """Wraps a callable passed to the constructor, or the identity function,
+    if none is provided. Docstrings and such are passed through via
+    functools.update_wrapper().
+
+    The provided callable can be accessed via the strip() function. Customi-
+    zation of how instances are stripped can be done by overloading the
+    attribute "_stripped".
 
     TypeError is raised if the object passed is not callable. Ability to
     accept a single argument is not validated.
