@@ -35,6 +35,8 @@ Also available as a (silent) doctest_ on the `command line`_::
 See Also
 --------
 
+Public links pending.
+
 Polynomial
 
 Wavegen
