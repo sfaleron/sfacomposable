@@ -1,7 +1,10 @@
 
-**Extensible Function Composition**
+Extensible Function Composition
+===============================
 
-Sample session::
+Sample session
+--------------
+::
 
     >>> from sfacomposable import Composable
     >>> f=Composable(lambda x:x+1)
@@ -29,4 +32,9 @@ Also available as a (silent) doctest_ on the `command line`_::
 .. _command line: https://docs.python.org/3/using/cmdline.html#cmdoption-m
 
 
-See also packages Polynomial and Wavegen.
+See Also
+--------
+
+Polynomial
+
+Wavegen
