@@ -1,2 +1,2 @@
 
-from .base import Composable, __doc__
+from .base import Composable, compose, compose_base, strip, __doc__
