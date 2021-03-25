@@ -3,7 +3,7 @@ Extensible function composition. See also packages Polynomial and Wavegen.
 
 Sample session::
 
-    >>> from composable import Composable
+    >>> from sfacomposable import Composable
     >>> f=Composable(lambda x:x+1)
     >>> g=Composable(lambda x:4*x)
     >>> @Composable
