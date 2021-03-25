@@ -1,6 +1,5 @@
 
-Extensible Function Composition
--------------------------------
+**Extensible Function Composition**
 
 Sample session::
 
