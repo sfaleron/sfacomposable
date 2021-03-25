@@ -1,5 +1,5 @@
 
-Extensible function composition. See also packages Polynomial and Wavegen.
+*Extensible Function Composition*
 
 Sample session::
 
@@ -27,3 +27,6 @@ Also available as a (silent) doctest_ on the `command line`_::
 
 .. _doctest: https://docs.python.org/3/library/doctest.html
 .. _command line: https://docs.python.org/3/using/cmdline.html#cmdoption-m
+
+
+See also packages Polynomial and Wavegen.
