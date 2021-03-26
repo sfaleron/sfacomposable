@@ -2,7 +2,7 @@
 Extensible Function Composition
 ===============================
 
-Sample session
+Sample Session
 --------------
 ::
 
@@ -22,21 +22,21 @@ Sample session
     >>> 1|f|g|h
     256
 
-Also available as a (silent) doctest_ on the `command line`_::
+Also available as a (silent) doctest_::
 
-    $ python -m sfacomposable.tests
-    Testing..
+    >>> import doctest
+    >>> import sfacomposable
+    >>> doctest.testmod(sfacomposable.base)
+    TestResults(failed=0, attempted=8)
+    >>> if not _.failed: print('Success!')
+    ...
     Success!
-
-.. _doctest: https://docs.python.org/3/library/doctest.html
-.. _command line: https://docs.python.org/3/using/cmdline.html#cmdoption-m
-
 
 See Also
 --------
 
-Public links pending.
+toolz_ A functional standard library for Python
 
-Polynomial
+.. _doctest: https://docs.python.org/3/library/doctest.html
+.. _toolz: https://github.com/pytoolz/toolz
 
-Wavegen
