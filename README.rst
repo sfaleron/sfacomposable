@@ -35,8 +35,9 @@ Also available as a (silent) doctest_::
 See Also
 --------
 
-toolz_: A functional standard library for Python
+toolz_: "A functional standard library for Python"
+compose_: "The classic ``compose``, with all the Pythonic features"
 
 .. _doctest: https://docs.python.org/3/library/doctest.html
 .. _toolz: https://github.com/pytoolz/toolz
-
+.. _compose: https://github.com/mentalisttraceur/python-compose
