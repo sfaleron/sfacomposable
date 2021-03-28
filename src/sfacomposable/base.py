@@ -50,9 +50,21 @@ def compose_base(*f):
 
 def compose(*f):
     """Returns a new Composable instance wrapping the composition, after
-    stripping (as needed) the arguments."""
+    stripping (as needed) the arguments.
 
-    return Composable(compose_base(*map(strip, f)))
+    The type of the result will match the outermost function, if it is a
+    instance of Composable or a class derived from it, or the property
+    _new is customized, the result of which depends on the customization.
+
+    Note that any such intermediate customization will be ignored. To
+    respect the customization compose in stages such that the desired
+    customization is outermost. The result will still pass through
+    strip() unless that is also suitably customized."""
+
+    instMkr = f[0]._new if hasattr(f[0], '_new') else (
+        type(f[0]) if isinstance(f[0], Composable) else Composable )
+
+    return instMkr(compose_base(*map(strip, f)))
 
 
 # Could mixin with a class with callable instances
@@ -67,6 +79,19 @@ class ComposableBase:
     The or operator is overloaded to implement "piping" in the manner familiar
     to shell users. Non-callable arguments at the front of the pipeline are
     passed to the function and evaluated in the expected manner."""
+
+
+    # maybe leaving this out would be better? Just overload __new__ instead.
+    # explicit is better than implicit, I think.
+
+    @property
+    def _new(self):
+        """Customizable instantiation. Overload if derived class has a sufficiently
+        distinct constructor signature. Otherwise, the type of the composition will
+        match the type of the outermost function, and the constructor (or factory)
+        will invoked as if it was the constructor of Composable."""
+
+        return self.__class__
 
     @staticmethod
     def _compose(f, g):
@@ -96,7 +121,8 @@ class ComposableBase:
 class Composable(ComposableBase):
     """Wraps a callable passed to the constructor, or the identity function,
     if none is provided. Docstrings and such are passed through via
-    functools.update_wrapper().
+    functools.update_wrapper(). The callable is passed through strip(), so
+    classes do not nest, unless stripping is customized to enable it.
 
     The provided callable can be accessed via the strip() function. Customi-
     zation of how instances are stripped can be done by overloading the
@@ -105,7 +131,7 @@ class Composable(ComposableBase):
     TypeError is raised if the object passed is not callable. Ability to
     accept a single argument is not validated.
 
-    >>> from sfacomposable import Composable
+    >>> from sfacomposable import Composable, strip
     >>> f=Composable(lambda x:x+1)
     >>> g=Composable(lambda x:4*x)
     >>> @Composable
@@ -120,6 +146,26 @@ class Composable(ComposableBase):
     256
     >>> 1|f|g|h
     256
+    >>> class Foo(Composable):
+    ...     pass
+    ...
+    >>> class Bar(Composable):
+    ...     _new = Foo
+    ...
+    >>> hFoo=Foo(h)
+    >>> hBar=Bar(h)
+    >>> type(strip(h))
+    <class 'function'>
+    >>> type(strip(hFoo))
+    <class 'function'>
+    >>> 1|f|g|hFoo
+    256
+    >>> 1|f|g|hBar
+    256
+    >>> type(f|g|hFoo).__name__
+    'Foo'
+    >>> type(f|g|hBar).__name__
+    'Foo'
     """
 
     @property
@@ -136,7 +182,7 @@ class Composable(ComposableBase):
         if not callable(f):
             raise TypeError('Pass a callable (that can be invoked as f(arg)), or pass nothing for the identity function.')
 
-        update_wrapper(self, f)
+        update_wrapper(self, strip(f))
 
     def __call__(self, t):
         return self.__wrapped__(t)

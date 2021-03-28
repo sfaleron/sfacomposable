@@ -27,7 +27,7 @@ Also available as a (silent) doctest_::
     >>> import doctest
     >>> import sfacomposable
     >>> doctest.testmod(sfacomposable.base)
-    TestResults(failed=0, attempted=8)
+    TestResults(failed=0, attempted=18)
     >>> if not _.failed: print('Success!')
     ...
     Success!
