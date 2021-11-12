@@ -53,7 +53,7 @@ def compose(*f):
     stripping (as needed) the arguments.
 
     The type of the result will match the outermost function, if it is a
-    instance of Composable or a class derived from it, or the property
+    instance of Composable or a class derived from it, unless the property
     _new is customized, the result of which depends on the customization.
 
     Note that any such intermediate customization will be ignored. To
